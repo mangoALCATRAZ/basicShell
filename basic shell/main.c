@@ -33,7 +33,7 @@ int main()
         exit(1);
     }
 
-    if(strcmp(cmdRaw, "quit") == 0){ // broken. new string needs to be allocated and individual words need to be tokenized
+    if(strcmp(cmdRaw, "quit") == 0){ // broken. new string needs to be allocated and individual words need to be tokenizedt
         printf("\n\n%s\n", "Exiting...");
     }
     return 0;
