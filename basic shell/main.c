@@ -20,6 +20,10 @@ int main()
         if(batch_mode == 0){
             printf("%s", "myshell");
 
+            for(int j = 0; j < sizeof(cmdRaw); j++){
+                cmdRaw[j] = '\0';
+            }
+
             if(getcwd(curDirectory, sizeof(curDirectory)) != NULL){
                 printf("%s%s%s", ": ", curDirectory, "> ");
             }
@@ -67,6 +71,11 @@ int main()
         else if(strcmp(token, "cd") == 0){
             printf("\n\n%s\n", "You selected cd");
         }
+        else if(strcmp(token, "clr") == 0 || strcmp(token, "clear") == 0){
+            printf("\e[1;1H\e[2J");
+        }
+
+    free(out);
 
     }
 
