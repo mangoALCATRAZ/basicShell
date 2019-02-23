@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
 #define MAX 200
 
@@ -69,10 +71,38 @@ int main()
             exit(0);
         }
         else if(strcmp(token, "cd") == 0){
-            printf("\n\n%s\n", "You selected cd");
+            token = strtok(NULL, " "); // next input
+
+            if(chdir(token) == 0){
+                printf("\n\n%s\n", "Directory changed!");
+            }
+            else{
+                printf("\n\n%s\n", "Error");
+            }
         }
         else if(strcmp(token, "clr") == 0 || strcmp(token, "clear") == 0){
             printf("\e[1;1H\e[2J");
+        }
+
+        else{
+            int pid = fork();
+
+            if(pid == 0){ // child process
+
+                char *const parmList[] = {token, "-a", NULL};
+                int yo = execvp(parmList[0], parmList);
+
+                if(yo != 0){
+                    printf("\n\n%s\n", "-1 error");
+                }
+
+                printf("\n\n%s\n", "error with execution");
+            }
+
+            else{
+                wait(NULL);
+                printf("\n\n%s\n", "Back to parent process");
+            }
         }
 
     free(out);
