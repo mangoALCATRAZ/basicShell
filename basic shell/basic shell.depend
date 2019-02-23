@@ -1,8 +1,9 @@
 # depslib dependency file v1.0
-1550794380 source:/home/matt/Desktop/basic shell/basic shell/main.c
+1550947723 source:/home/matt/Desktop/basic shell/basic shell/main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<unistd.h>
 	<sys/types.h>
+	<sys/wait.h>
 

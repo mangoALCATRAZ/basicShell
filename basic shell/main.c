@@ -66,7 +66,10 @@ int main()
 
         char * token = strtok(out, " ");
 
-        if(strcmp(token, "quit") == 0){ // broken. new string needs to be allocated and individual words need to be tokenizedt
+        if(token == NULL){
+            // nothing
+        }
+        else if(strcmp(token, "quit") == 0){ // broken. new string needs to be allocated and individual words need to be tokenizedt
             printf("\n\n%s\n", "Exiting...");
             exit(0);
         }
@@ -89,8 +92,22 @@ int main()
 
             if(pid == 0){ // child process
 
-                char *const parmList[] = {token, "-a", NULL};
-                int yo = execvp(parmList[0], parmList);
+                char * p1;
+                char * p2;
+                char * p3;
+
+                char *args[64];
+                char **next = args;
+
+                *next++ = token;
+                token = strtok(NULL, " ");
+
+                while(token != NULL){
+                    *next++ = token;
+                    token = strtok(NULL, " ");
+                }
+                *next = NULL;
+                int yo = execvp(args[0], args);
 
                 if(yo != 0){
                     printf("\n\n%s\n", "-1 error");
