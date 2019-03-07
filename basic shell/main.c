@@ -7,6 +7,10 @@
 
 #define MAX 200
 
+int forkLogic(char* args[]);
+int pipeLogic(char* args[], char* pipeArgs[]);
+
+
 int main()
 {
     int batch_mode = 0;
@@ -88,37 +92,56 @@ int main()
         }
 
         else{
-            int pid = fork();
+            char *args[64];
+            char **next = args;
 
-            if(pid == 0){ // child process
+            char *pipeArgs[64];
+            char **nextPipe = pipeArgs;
 
-                char * p1;
-                char * p2;
-                char * p3;
+            int pipeFlag = 0;
+            int errorFlag = 0;
 
-                char *args[64];
-                char **next = args;
+            *next++ = token;
+            token = strtok(NULL, " ");
 
+            while(token != NULL){
+                if(strcmp(token, "|") == 0){
+                    pipeFlag = 1;
+                    break;
+                }
                 *next++ = token;
                 token = strtok(NULL, " ");
-
-                while(token != NULL){
-                    *next++ = token;
-                    token = strtok(NULL, " ");
-                }
-                *next = NULL;
-                int yo = execvp(args[0], args);
-
-                if(yo != 0){
-                    printf("\n\n%s\n", "-1 error");
-                }
-
-                printf("\n\n%s\n", "error with execution");
             }
 
+
+            *next = NULL;
+
+            if(pipeFlag == 1){
+                token = strtok(NULL, " ");
+
+                if(token == NULL){
+                    errorFlag = 1;
+                }
+                else{
+                    while(token != NULL){
+                        *nextPipe++ = token;
+                        token = strtok(NULL, " ");
+                    }
+
+                    *nextPipe = NULL;
+                }
+            }
+
+            if(errorFlag == 0){ // if no errors, proceed
+                if(pipeFlag == 1){
+                    pipeLogic(args, pipeArgs);
+                }
+                else{
+                    forkLogic(args);
+                }
+            }
             else{
-                wait(NULL);
-                printf("\n\n%s\n", "Back to parent process");
+                printf("\n\n%s\n", "Error: invalid input");
             }
         }
 
@@ -127,5 +150,84 @@ int main()
     }
 
     return 0;
+}
+
+int forkLogic(char* args[]){
+    int pid;
+    int ret = 0;
+
+    pid = fork();
+
+    if(pid < 0){
+        printf("\n\nForking error!");
+        ret = 1;
+    }
+    else if(pid == 0){ // CHILD PROCESS
+        int execute = execvp(args[0], args);
+        if(execute != 0){
+            printf("\n\nExecution Error in fork");
+            exit(0);
+        }
+    }
+    else{ // PARENT PROCESS
+        wait(NULL);
+    }
+
+    return ret;
+}
+
+int pipeLogic(char* args[], char* pipeArgs[]){
+    int pid;
+    int pid2;
+    int fd[2];
+    int ret = 0;
+
+    if(pipe(fd) < 0){
+        printf("Error in piping");
+        ret = 1;
+    }
+    else{
+        pid = fork();
+        if(pid < 0){
+            printf("Forking error!");
+            ret = 1;
+        }
+
+        else if(pid == 0){ // CHILD
+            close(fd[0]);
+            dup2(fd[1], 1);
+            close(fd[1]);
+
+            int execute = execvp(args[0], args);
+            if(execute != 0){
+                printf("\n\n%s\n", "-1 error");
+                exit(0);
+            }
+        }
+        else{ // PARENT
+            pid2 = fork();
+
+            if(pid2 < 0){
+                printf("fork error");
+                ret = 1;
+            }
+            else if(pid2 == 0){ // NEW CHILD
+                close(fd[1]);
+                dup2(fd[0], 0);
+                close(fd[0]);
+                int execute2 = execvp(pipeArgs[0], pipeArgs);
+                if(execute2 < 0){
+                    printf("-1 error");
+                    exit(0);
+                }
+            }
+            else{ // NEW PARENT
+                waitpid(pid, NULL, WNOHANG);
+                waitpid(pid2, NULL, WNOHANG);
+            }
+        }
+
+    }
+    return ret;
 }
 
