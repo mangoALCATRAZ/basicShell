@@ -222,8 +222,10 @@ int pipeLogic(char* args[], char* pipeArgs[]){
                 }
             }
             else{ // NEW PARENT
-                waitpid(pid, NULL, WNOHANG);
-                waitpid(pid2, NULL, WNOHANG);
+                close(fd[0]);
+                close(fd[1]);
+                waitpid(pid, NULL, WCONTINUED);
+                waitpid(pid2, NULL, WCONTINUED);
             }
         }
 
