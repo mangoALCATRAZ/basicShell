@@ -16,9 +16,10 @@ int pipeLogic(char* args[], char* pipeArgs[]);
 
 
 
-int main()
+int main(int argc, char *argv[])
 {
     int batch_mode = 0;
+    FILE *batchIn;
 
     int exitFlag = 0;
 
@@ -32,6 +33,16 @@ int main()
     char *cmd;
     char * out;
     char curDirectory[50];
+
+    if (argc >= 2){
+        batch_mode = 1;
+        char const* const fileName = argv[1];
+        batchIn = fopen(fileName, "r");
+        if(batchIn == NULL){
+            printf("\n\nError opening Batch File. Proceeeding with normal terminal function.");
+            batch_mode = 0;
+        }
+    }
 
     while(exitFlag == 0){
         if(batch_mode == 0){
@@ -73,6 +84,29 @@ int main()
             strcpy(out, cmdRaw);
             printf("ok");
 
+        }
+        else if(batch_mode == 1){
+            for(int j = 0; j < sizeof(cmdRaw); j++){
+                cmdRaw[j] = '\0';
+            }
+
+            if(fgets(cmdRaw, sizeof(cmdRaw), batchIn) == NULL){
+                exit(1);
+            }
+            else{
+                int increm = 0;
+                while(cmdRaw[increm] != '\n' && cmdRaw[increm] != '\0' && cmdRaw[increm] != EOF){
+
+                    increm++;
+                }
+                if(cmdRaw[increm] == '\n' || cmdRaw[increm] == EOF){
+                    cmdRaw[increm] = '\0';
+                }
+
+                out = (char*) malloc(increm * sizeof(char));
+                strcpy(out, cmdRaw);
+                printf("\n\nok\n");
+            }
         }
 
         else{
