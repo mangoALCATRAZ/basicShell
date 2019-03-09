@@ -1,0 +1,80 @@
+total 56
+-rwxr-xr-x 1 matt matt 13008 Feb 23 13:57 a.out
+-rw-rw-r-- 1 matt matt  1072 Feb 18 09:40 basic shell.cbp
+-rw-r--r-- 1 matt matt   201 Mar  8 21:24 basic shell.depend
+-rw-r--r-- 1 matt matt   358 Mar  8 19:37 basic shell.layout
+drwxr-xr-x 3 matt matt  4096 Feb 18 12:37 bin
+-rw-r--r-- 1 matt matt 12612 Mar  8 21:24 main.c
+drwxr-xr-x 3 matt matt  4096 Feb 18 12:37 obj
+-rw-r--r-- 1 matt matt     0 Mar  8 19:30 out
+-rwx---r-x 1 matt matt    84 Mar  8 21:30 out3
+-rwx---r-x 1 matt matt     0 Mar  8 21:31 out4
+total 60
+-rwxr-xr-x 1 matt matt 13008 Feb 23 13:57 a.out
+-rw-rw-r-- 1 matt matt  1072 Feb 18 09:40 basic shell.cbp
+-rw-r--r-- 1 matt matt   201 Mar  8 21:24 basic shell.depend
+-rw-r--r-- 1 matt matt   358 Mar  8 19:37 basic shell.layout
+drwxr-xr-x 3 matt matt  4096 Feb 18 12:37 bin
+-rw-r--r-- 1 matt matt 12612 Mar  8 21:24 main.c
+drwxr-xr-x 3 matt matt  4096 Feb 18 12:37 obj
+-rw-r--r-- 1 matt matt     0 Mar  8 19:30 out
+-rwx---r-x 1 matt matt    84 Mar  8 21:30 out3
+-rwx---r-x 1 matt matt   518 Mar  8 21:31 out4
+a.out
+basic shell.cbp
+basic shell.depend
+basic shell.layout
+bin
+main.c
+more
+obj
+out
+out3
+out4
+a.out
+basic shell.cbp
+basic shell.depend
+basic shell.layout
+bin
+main.c
+more
+obj
+out
+out3
+out4
+total 60
+-rwxr-xr-x 1 matt matt 13008 Feb 23 13:57 a.out
+-rw-rw-r-- 1 matt matt  1072 Feb 18 09:40 basic shell.cbp
+-rw-r--r-- 1 matt matt   201 Mar  8 21:24 basic shell.depend
+-rw-r--r-- 1 matt matt   358 Mar  8 19:37 basic shell.layout
+drwxr-xr-x 3 matt matt  4096 Feb 18 12:37 bin
+-rw-r--r-- 1 matt matt 12843 Mar  8 21:45 main.c
+-rwx---r-x 1 matt matt     0 Mar  8 21:45 more
+drwxr-xr-x 3 matt matt  4096 Feb 18 12:37 obj
+-rw-r--r-- 1 matt matt     0 Mar  8 19:30 out
+-rwx---r-x 1 matt matt    84 Mar  8 21:30 out3
+-rwx---r-x 1 matt matt  1224 Mar  8 21:45 out4
+total 60
+-rwxr-xr-x 1 matt matt 13008 Feb 23 13:57 a.out
+-rw-rw-r-- 1 matt matt  1072 Feb 18 09:40 basic shell.cbp
+-rw-r--r-- 1 matt matt   201 Mar  8 21:24 basic shell.depend
+-rw-r--r-- 1 matt matt   358 Mar  8 19:37 basic shell.layout
+drwxr-xr-x 3 matt matt  4096 Feb 18 12:37 bin
+-rw-r--r-- 1 matt matt 12843 Mar  8 21:45 main.c
+-rwx---r-x 1 matt matt     0 Mar  8 21:45 more
+drwxr-xr-x 3 matt matt  4096 Feb 18 12:37 obj
+-rw-r--r-- 1 matt matt     0 Mar  8 19:30 out
+-rwx---r-x 1 matt matt    84 Mar  8 21:30 out3
+-rwx---r-x 1 matt matt  1789 Mar  8 21:46 out4
+total 60
+-rwxr-xr-x 1 matt matt 13008 Feb 23 13:57 a.out
+-rw-rw-r-- 1 matt matt  1072 Feb 18 09:40 basic shell.cbp
+-rw-r--r-- 1 matt matt   201 Mar  8 21:24 basic shell.depend
+-rw-r--r-- 1 matt matt   358 Mar  8 19:37 basic shell.layout
+drwxr-xr-x 3 matt matt  4096 Feb 18 12:37 bin
+-rw-r--r-- 1 matt matt 12843 Mar  8 21:45 main.c
+-rwx---r-x 1 matt matt     0 Mar  8 21:45 more
+drwxr-xr-x 3 matt matt  4096 Feb 18 12:37 obj
+-rw-r--r-- 1 matt matt     0 Mar  8 19:30 out
+-rwx---r-x 1 matt matt    84 Mar  8 21:30 out3
+-rwx---r-x 1 matt matt  2354 Mar  8 21:46 out4
