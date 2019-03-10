@@ -6,10 +6,12 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <sys/wait.h>
+#include <dirent.h>
 
 #define MAX 200
 
 int prepareOutputRedirection(char **token, char **filename);
+int builtInOutputRedirect(char ** token, char ** filename, int * file, int * saved_stdout);
 int prepareInputRedirection(char **token, char **filename);
 int forkLogic(char* args[], int inRedirect, int outRedirect);
 int pipeLogic(char* args[], char* pipeArgs[]);
@@ -132,6 +134,63 @@ int main(int argc, char *argv[])
                 printf("\n\n%s\n", "Error");
             }
         }
+        else if(strcmp(token, "dir") == 0){
+            int outRedirFlag = 0;
+            int saved_stdout = 0;
+
+            int errorFlag = 0;
+
+            char * directoryName;
+            char ** direcP = &directoryName;
+            char ** tokP = &token;
+            char ** filenameP = &outRedirectFilename;
+
+            int * fileP = &outRedirect;
+            int * savedP = &saved_stdout;
+
+            token = strtok(NULL, " ");
+
+            if(token == NULL || strcmp(token, ">") == 0 || strcmp(token, ">>") == 0){
+                directoryName = curDirectory;
+            }
+            else{
+                directoryName = token;
+                token = strtok(NULL, " ");
+            }
+
+
+            if(token != NULL){
+                if(strcmp(token, ">") == 0 || strcmp(token, ">>") == 0){
+                    int outRedirResult = builtInOutputRedirect(tokP, filenameP, fileP, savedP);
+                    if(outRedirResult == 0){
+                        outRedirFlag = 1;
+                    }
+                    else if(outRedirResult < -1){
+                        printf("\n\n%s\n", "Error in Output Redirection");
+                        errorFlag = 1;
+                    }
+                }
+            }
+            if(errorFlag == 0){
+                DIR *directory;
+                struct dirent *s;
+                directory = opendir(directoryName);
+                if(directory == NULL){
+                    printf("\n\n%s\n", "Error: Directory could not be found.");
+                }
+                else{
+                    while((s = readdir(directory)) != NULL){
+                        printf("%s\n", s->d_name);
+                    }
+                }
+
+                if(outRedirFlag == 1){
+                    dup2(saved_stdout, 1);
+                    close(saved_stdout);
+                }
+            }
+        }
+
         else if(strcmp(token, "clr") == 0 || strcmp(token, "clear") == 0){
             printf("\e[1;1H\e[2J");
         }
@@ -340,6 +399,54 @@ int prepareOutputRedirection(char **token, char **filename){
             else if(strcmp(*token, "<") == 0){
                 ret = 1; // additional input redirection detected
             }
+        }
+    }
+
+    return ret;
+}
+
+int builtInOutputRedirect(char ** token, char ** filename, int * file, int * saved_stdout){
+    int ret = 0;
+
+    char * appendOrTruncate;
+
+    if(strcmp(*token, ">") != 0 && strcmp(*token, ">>") != 0){
+        *token = strtok(NULL, " ");
+    }
+
+    if(*token != NULL){
+            if(strcmp(*token, ">") == 0 || strcmp(*token, ">>")){
+                appendOrTruncate = *token;
+
+                if(prepareOutputRedirection(token, filename) != 0){
+                    ret = -1; //error
+                }
+                else{
+                    if(strcmp(appendOrTruncate, ">") == 0){ // Truncate
+                        *file = open(*filename, O_RDWR | O_CREAT | O_TRUNC, S_IRWXU | S_IRWXO);
+                        if(*file == -1){
+                            ret = -1; //error
+                        }
+                        else{
+                            *saved_stdout = dup(1);
+                            dup2(*file, 1);
+                        }
+                    }
+                    else if(strcmp(appendOrTruncate, ">>") == 0){ //Append
+                        *file = open(*filename, O_RDWR | O_CREAT | O_APPEND, S_IRWXU | S_IRWXO);
+                        if(*file == -1){
+                            ret = -1; // error
+                        }
+                        else{
+                            *saved_stdout = dup(1);
+                            dup2(*file, 1);
+                        }
+                    }
+                }
+
+            }
+        else{
+            ret = -2; // no output redirection specified
         }
     }
 

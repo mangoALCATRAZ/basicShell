@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1552158558 source:/home/matt/Desktop/basic shell/basic shell/main.c
+1552177681 source:/home/matt/Desktop/basic shell/basic shell/main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -8,4 +8,5 @@
 	<sys/stat.h>
 	<fcntl.h>
 	<sys/wait.h>
+	<dirent.h>
 
