@@ -135,6 +135,55 @@ int main(int argc, char *argv[])
             }
         }
         else if(strcmp(token, "dir") == 0){
+            int errorFlag = 0;
+            int outputFlag = 0;
+            int saved_stdout = 0;
+
+            char ** filenameP = &outRedirectFilename;
+            char ** tokP = &token;
+            int * fileP = &outRedirect;
+            int * stdoutP = &saved_stdout;
+
+
+            char * echoString;
+
+            token = strtok(NULL, " ");
+            if(token == NULL){
+                printf("\n\n%s\n", "Error: Nothing to echo!");
+                errorFlag = 1;
+            }
+            else if(strcmp(token, ">") == 0 || strcmp(token, ">>") == 0){
+                if(strcmp(token, ">") == 0){
+                    int outRedirResult = builtInOutputRedirect(tokP, filenameP, fileP, stdoutP);
+                    if(outRedirResult == 0){
+                        outputFlag = 1;
+                    }
+                    else{
+                        printf("\n\n%s\n", "Error in output redirection");
+                        errorFlag = 1;
+                    }
+                }
+            }
+            else{
+                echoString = token;
+            }
+
+            if(errorFlag == 0){
+                if(outputFlag == 0){
+                    printf("\n");
+                }
+                printf("%s", echoString);
+
+                if(outputFlag == 1){
+                    dup2(saved_stdout, 1);
+                    close(saved_stdout);
+                    close(outRedirect);
+                }
+
+            }
+
+        }
+        else if(strcmp(token, "dir") == 0){
             int outRedirFlag = 0;
             int saved_stdout = 0;
 
@@ -187,7 +236,9 @@ int main(int argc, char *argv[])
                 if(outRedirFlag == 1){
                     dup2(saved_stdout, 1);
                     close(saved_stdout);
+                    close(outRedirect);
                 }
+
             }
         }
 
